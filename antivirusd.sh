@@ -3,6 +3,22 @@
 MALICIOUS_EXTS=("exe" "bat" "vbs" "scr" "ps1")
 MALICIOUS_TEXTS=("virus" "trojan" "malware" "worm" "ransomware")
 
+isWhitelisted() {
+   # Check if the whitelist file exists
+   if [ ! -f "$DIR/.whitelist.txt" ]
+   then
+      return 1
+   fi
+   
+   # -x: exact line match, -F: inside file, -q: silently
+   if grep -qxF "$1" "$DIR/.whitelist.txt"
+   then
+      return 0
+   else
+      return 1
+   fi
+}
+
 isMaliciousExtension() {
    for malExt in "${MALICIOUS_EXTS[@]}" # [@] to expand array elements, not to check only first
    do
@@ -36,6 +52,11 @@ scanDir() {
    echo "Scanning files"
    for file in "$DIR"/*
    do
+      if isWhitelisted "$file"
+      then
+         echo "Skipping whitelisted file: $file"
+         continue
+      fi
       echo "Checking $file"
       ext="${file##*.}"
       if isMaliciousExtension "$ext" || hasMaliciousText "$file"

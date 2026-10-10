@@ -81,6 +81,15 @@ Flagged texts and extensions are defined in and array at `antivirusd.sh`
 4	MALICIOUS_TEXTS=("virus" "trojan" "malware" "worm" "ransomware")
 ```
 
+## Whitelist Persistence Mechanics
+
+### Adding to the Whitelist:
+When a user selects to keep file in `restore.sh`, the tool adds the restored file's path in a file located at `test_dir/.whitelist.txt`
+
+### Daemon Inspection Verification:
+Before performing checks inside `scanDir`, the daemon runs the `isWhitelisted()` function that uses `grep -qxF` to evaluate if the path exists in `.whitelist.txt`. If yes it skips it compeletly.
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first

@@ -37,9 +37,11 @@ do
    read action
    if [ "$action" -eq 1 ]
    then
+      filename=$(basename "$selected")
+      echo "$DIR/$filename" >> "$DIR/.whitelist.txt"
       cp "$selected" "$DIR/"
       rm "$selected"
-      echo "Restored $selected to $DIR."
+      echo "Restored $selected to $DIR and added to whitelist."
    fi
    if [ "$action" -eq 2 ]
    then
