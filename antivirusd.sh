@@ -15,13 +15,14 @@ echo "Malicious directory: $MALICIOUS_DIR"
 echo "Checking every $INTERVAL seconds"
 
 # before running first scan type directory-info
-ls -l DIR > directory-info.last
+scanDir
+ls -l $DIR > directory-info.last
 
 while true
 do
    # create new directory-info
-   ls -l DIR > directory-info.new
-   if ! cmp directory-info.last directory-info.new
+   ls -l $DIR > directory-info.new
+   if ! cmp -s directory-info.last directory-info.new
    then
       scanDir
       cp directory-info.new directory-info.last
