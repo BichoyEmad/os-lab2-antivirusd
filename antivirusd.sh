@@ -19,7 +19,7 @@ hasMaliciousText() {
    # -q to run quite
    # -i for case-insensitive
    # -E using Regex
-   if grep -qi -E "$(IFS="|"; echo ${MALICIOUS_TEXTS[*]})" "$1"
+   if grep -qi -E "$(IFS="|"; echo "${MALICIOUS_TEXTS[*]}")" "$1"
    then
       return 0
    fi

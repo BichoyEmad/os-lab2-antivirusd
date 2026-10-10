@@ -7,6 +7,7 @@ A simplified antivirus daemon: a shell script that periodically checks a directo
 .
 ├── Makefile             # Automated task runner and environment wrapper
 ├── antivirusd.sh        # Core background monitoring and scanning daemon
+├── antivirus-cron.sh    # antivirus deamon with cron job scheduling
 ├── restore.sh           # Interactive recovery control panel menu tool
 ├── .gitignore           # Excludes local runtime logs and test materials
 ├── test_dir/            # Monitored directory workspace (Files only)
@@ -21,13 +22,52 @@ A simplified antivirus daemon: a shell script that periodically checks a directo
 ```bash
 mkdir -p test_dir
 ```
+3. Add cron Jobs in Linux
+``` bash
+# Check cron service on Linux system
+sudo systemctl status cron.service
+```
+
+## Cron job syntax
+
+```bash
+# Cron job example
+* * * * * sh /path/to/script.sh
+```
+``` bash
+*   *   *   *   *  sh /path/to/script/script.sh
+|   |   |   |   |              |
+|   |   |   |   |      Command or Script to Execute        
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   | Day of the Week(0-6)
+|   |   |   |
+|   |   | Month of the Year(1-12)
+|   |   |
+|   | Day of the Month(1-31)  
+|   |
+| Hour(0-23)  
+|
+Min(0-59)
+```
+
+####
 
 ## Usage
 
-To run the antivirus daemon
+To schedule daemon to be run every 1 minute at second 23
+
 ```bash
-make
+* * * * * sleep 23 && /home/user/labs/antivirus/antivirus-cron.sh /home/user/labs/antivirus/test_dir /home/user/labs/antivirus/quarantine_dir
 ```
+
+To schedule daemon to be run every 3rd Friday of the month at 12:31 am
+
+```bash
+31 0 15-21 * 5 sh /home/user/labs/antivirus/antivirus-cron.sh /home/user/labs/antivirus/test_dir /home/user/labs/antivirus/quarantine_dir
+```
+
 To run the restore quarantined malicious files tool
 ```bash
 make restore
